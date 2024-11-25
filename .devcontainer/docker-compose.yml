@@ -1,0 +1,43 @@
+version: '3.8'  # Specifies Docker Compose version
+
+services:
+  # Application container
+  app:
+    image: mcr.microsoft.com/vscode/devcontainers/javascript-node:latest
+    build:
+      context: .  # Build from the current directory
+    volumes:
+      - .:/workspace  # Mount the workspace into the container
+    ports:
+      - "3000:3000"  # Expose port 3000 for the application
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - db  # The app depends on the database
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 10s
+      retries: 5
+
+  # PostgreSQL container for database storage
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"  # Expose port 5432 for PostgreSQL
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # Persist data
+
+  # Redis container (optional for caching)
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"  # Expose port for Redis
+
+# Volumes to persist data
+volumes:
+  pgdata:
+    driver: local  # Use a local volume for PostgreSQL
