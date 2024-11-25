@@ -1,0 +1,22 @@
+version: '3'
+services:
+  app:
+    image: mcr.microsoft.com/vscode/devcontainers/javascript-node:latest
+    volumes:
+      - .:/workspace
+    ports:
+      - "3000:3000"  # Adjust according to the port your app uses
+    environment:
+      - NODE_ENV=development
+    build:
+      context: .
+    command: bash
+  # Optional: Add a database or any additional service you might need
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"

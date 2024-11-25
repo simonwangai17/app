@@ -1,0 +1,11 @@
+{
+    "name": "My Application Dev Container",
+    "dockerFile": "Dockerfile",  // or "dockerComposeFile": "docker-compose.yml" if using Docker Compose
+    "context": "..",
+    
+  
+    "postCreateCommand": "npm install",  // Run this command after container setup
+    "postStartCommand": "echo 'Welcome to your development container!'",
+    "remoteUser": "vscode"
+  }
+  
